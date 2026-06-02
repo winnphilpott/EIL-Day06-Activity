@@ -70,7 +70,19 @@ cat("\n=== Sanity Check: Nearby Plants (50 km buffer) ===\n")
 cat("Buffer distance:                 ", buffer_dist_m / 1000, "km\n")
 cat("Counties with >= 1 nearby plant: ", sum(counties_buf$n_plants_50km > 0), "of", nrow(counties_buf), "\n")
 cat("Counties with 0 nearby plants:   ", sum(counties_buf$n_plants_50km == 0), "\n")
-cat("Max nearby plants (one county):  ", max(counties_buf$n_plants_50km), "\n")
+cat("Counties with 1 nearby plant:    ", sum(counties_buf$n_plants_50km == 1), "\n")
+cat("Counties with 2+ nearby plants:  ", sum(counties_buf$n_plants_50km >= 2), "\n")
+cat("\nDistribution of nearby plants per county:\n")
+print(summary(counties_buf$n_plants_50km))
+cat("Std deviation:                   ", round(sd(counties_buf$n_plants_50km), 2), "\n")
+cat("\nTop 5 counties by nearby plant count:\n")
+print(
+  counties_buf |>
+    st_drop_geometry() |>
+    arrange(desc(n_plants_50km)) |>
+    select(NAME, STATEFP, n_plants_50km) |>
+    head(5)
+)
 cat("===================================================\n\n")
 
 
