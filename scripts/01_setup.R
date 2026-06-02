@@ -101,6 +101,7 @@ pm25 <- terra::project(pm25, paste0("EPSG:", target_crs))
 # with the reprojection. Better to catch it here than get mysterious errors
 # later in the analysis.
 
+stopifnot(st_crs(counties) == st_crs(plants))
 stopifnot(st_crs(counties)$epsg == target_crs)
 stopifnot(st_crs(plants)$epsg   == target_crs)
 
