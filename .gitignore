@@ -1,8 +1,10 @@
 # R
 .Rhistory
+.Rapp.history
 .RData
 .Rproj.user/
 *.Rproj
+Rplots.pdf
 
 # OS
 .DS_Store
