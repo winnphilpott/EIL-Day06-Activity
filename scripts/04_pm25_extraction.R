@@ -26,3 +26,63 @@
 # =============================================================================
 
 source("scripts/01_setup.R")
+
+
+# ---- Extract mean PM2.5 per county -------------------------------------------
+# exact_extract() takes the raster and the county polygons and computes a
+# summary statistic for each county. fun = "mean" gives the area-weighted
+# average of all raster cells that overlap each county polygon.
+#
+# progress = FALSE suppresses a progress bar that is useful interactively
+# but clutters automated output.
+
+counties_pm25 <- counties |>
+  mutate(
+    mean_pm25 = exact_extract(pm25, geometry, fun = "mean", progress = FALSE)
+  )
+
+
+# ---- Sanity check ------------------------------------------------------------
+# Every county should get a non-NA mean. A high NA count would suggest the
+# raster does not fully cover the county layer (a CRS mismatch or extent
+# problem). The value range should be physically plausible: annual mean PM2.5
+# in the contiguous U.S. typically runs from roughly 2 to 15 ug/m^3.
+
+cat("\n=== Sanity Check: PM2.5 Extraction ===\n")
+cat("Counties with non-NA mean PM2.5: ", sum(!is.na(counties_pm25$mean_pm25)), "of", nrow(counties_pm25), "\n")
+cat("Counties with NA mean PM2.5:     ", sum(is.na(counties_pm25$mean_pm25)), "\n")
+cat("PM2.5 range (ug/m^3):            ", round(min(counties_pm25$mean_pm25, na.rm = TRUE), 2),
+    "to", round(max(counties_pm25$mean_pm25, na.rm = TRUE), 2), "\n")
+cat("PM2.5 mean across all counties:  ", round(mean(counties_pm25$mean_pm25, na.rm = TRUE), 2), "\n")
+cat("=======================================\n\n")
+
+
+# ---- Map ---------------------------------------------------------------------
+# Choropleth: each county shaded by its mean annual PM2.5 concentration.
+# No transformation needed here -- PM2.5 values are already on a fairly
+# linear scale across counties.
+
+p_pm25 <- ggplot(counties_pm25) +
+  geom_sf(aes(fill = mean_pm25), color = NA) +
+  scale_fill_viridis_c(
+    name   = "Mean PM2.5\n(ug/m^3)",
+    option = "magma"
+  ) +
+  labs(
+    title   = "Mean annual PM2.5 by county, contiguous U.S.",
+    caption = "Source: EPA / satellite-derived PM2.5 surface"
+  ) +
+  theme_void() +
+  theme(legend.position = "right")
+
+print(p_pm25)
+
+ggsave(
+  "outputs/map_pm25.png",
+  plot   = p_pm25,
+  width  = 10,
+  height = 6,
+  dpi    = 150
+)
+
+cat("Map saved to outputs/map_pm25.png\n")
