@@ -14,22 +14,22 @@ PM2.5s are a common air pollutant that are harmful to breathe in. PM2.5s are emi
 This brief explores county-level power plant spatial data within the contiguous United States to explore the relationship between proximity to power plants and PM2.5 exposure. 
 
 ## Power plants per county
-![Power Plants per County](outputs/map_plants_per_county.png){ width=80% }
+![Power Plants per County](outputs/map_plants_per_county.png){width=80%}
 
 Throughout the contiguous United States, the vast majority of counties have 50 or fewer power plants within them. The median number of power plants in a county is 1, and the mean is slightly less than 4. Most counties are close to the mean with a standard deviation of about 10, and Los Angeles County has the maximum of 237 power plants. Counties with higher-than-average numbers of power plants are primarily in southern California, the Northeast, North Carolina, the Twin Cities, and the Houston area.
 
 ## Nearby plants (50 km buffer)
-![Power plants within 50 km](outputs/map_nearby_plants.png){ width=80% }
+![Power plants within 50 km](outputs/map_nearby_plants.png){width=80%}
 
 Figure 1 helps show where the power plants themselves are but does not fully describe the potential impact of PM2.5s emitted by the power plants. The EPA classifies PM2.5 emitting facilities are "near-field" within 50km, sometimes more (EPA Citation). Therefore, any power plant within 50km of a given county is considered "nearby" for this brief. The second figure shows that many more counties without power plants are near at least one power plant. The median number of power plants nearby is 20 -- 20 times larger than the mean of power plants within counties. The mean is a little over 36 power plants nearby per county, though the standard distribution is about 53, indicating a wider spread than when only counting within-county power plants.
 
 ## Mean PM2.5 per county
-![Mean PM2.5 per county](outputs/map_pm25.png){ width=80% }
+![Mean PM2.5 per county](outputs/map_pm25.png){width=80%}
 
 At the county level, the maximum PM2.5 level is 11.74 and the lowest is 3.12. Compared to historical data of United States PM2.5 levels the distribution of the mean annual PM2.5 is pretty tight, centered around the mean and median of about 8. More densely-populated areas have higher levels, as visualized in Figure 3.
 
 ## Comparison: PM2.5 in counties with vs. without plants
-![PM2.5 by plant presence](outputs/pm25_comparison.png){ width=80% }
+![PM2.5 by plant presence](outputs/pm25_comparison.png){width=80%}
 
 ### Within-county measure
 The levels of PM2.5 in counties with and without plants is nearly identical -- both PM2.5 means are very close to 8. 
