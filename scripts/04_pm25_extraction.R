@@ -51,9 +51,25 @@ counties_pm25 <- counties |>
 cat("\n=== Sanity Check: PM2.5 Extraction ===\n")
 cat("Counties with non-NA mean PM2.5: ", sum(!is.na(counties_pm25$mean_pm25)), "of", nrow(counties_pm25), "\n")
 cat("Counties with NA mean PM2.5:     ", sum(is.na(counties_pm25$mean_pm25)), "\n")
-cat("PM2.5 range (ug/m^3):            ", round(min(counties_pm25$mean_pm25, na.rm = TRUE), 2),
-    "to", round(max(counties_pm25$mean_pm25, na.rm = TRUE), 2), "\n")
-cat("PM2.5 mean across all counties:  ", round(mean(counties_pm25$mean_pm25, na.rm = TRUE), 2), "\n")
+cat("\nDistribution of mean PM2.5 per county (ug/m^3):\n")
+print(summary(counties_pm25$mean_pm25))
+cat("Std deviation:                   ", round(sd(counties_pm25$mean_pm25, na.rm = TRUE), 2), "\n")
+cat("\nTop 5 counties by highest mean PM2.5:\n")
+print(
+  counties_pm25 |>
+    st_drop_geometry() |>
+    arrange(desc(mean_pm25)) |>
+    select(NAME, STATEFP, mean_pm25) |>
+    head(5)
+)
+cat("\nTop 5 counties by lowest mean PM2.5:\n")
+print(
+  counties_pm25 |>
+    st_drop_geometry() |>
+    arrange(mean_pm25) |>
+    select(NAME, STATEFP, mean_pm25) |>
+    head(5)
+)
 cat("=======================================\n\n")
 
 
