@@ -1,3 +1,9 @@
+---
+header-includes:
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+---
+
 # Day 6 Activity — Brief
 
 **Author:** Winn Philpott  
