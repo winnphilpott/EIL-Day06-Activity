@@ -75,8 +75,6 @@ p_pm25 <- ggplot(counties_pm25) +
   theme_void() +
   theme(legend.position = "right")
 
-print(p_pm25)
-
 ggsave(
   "outputs/map_pm25.png",
   plot   = p_pm25,

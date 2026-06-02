@@ -93,8 +93,6 @@ p_buf <- ggplot(counties_buf) +
   theme_void() +
   theme(legend.position = "right")
 
-print(p_buf)
-
 ggsave(
   "outputs/map_nearby_plants.png",
   plot   = p_buf,

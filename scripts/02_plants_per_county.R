@@ -93,8 +93,6 @@ p_pip <- ggplot(counties_pip) +
   theme_void() +
   theme(legend.position = "right")
 
-print(p_pip)
-
 ggsave(
   "outputs/map_plants_per_county.png",
   plot   = p_pip,
