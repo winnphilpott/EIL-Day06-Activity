@@ -7,6 +7,7 @@ Run the scripts in numbered order. Each script sources `01_setup.R` at the top, 
 | Script | Purpose | Key output |
 |--------|---------|------------|
 | `01_setup.R` | Load packages, set paths, load and reproject all three datasets | R objects: `counties`, `plants`, `pm25` |
+| `01b_explore.R` | Inspect all three datasets for data quality issues before any analysis | Console output and plots only |
 | `02_plants_per_county.R` | Count power plants inside each county (point-in-polygon join) | `counties` with `n_plants` column; map saved to `outputs/` |
 | `03_nearby_plants.R` | Count power plants within 50 km of each county (buffer join) | `counties` with `n_plants_50km` column; map saved to `outputs/` |
 | `04_pm25_extraction.R` | Extract area-weighted mean PM2.5 for each county from the raster | `counties` with `mean_pm25` column; map saved to `outputs/` |
