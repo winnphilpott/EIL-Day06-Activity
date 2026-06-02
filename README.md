@@ -1,7 +1,7 @@
 # EIL Day 6 Activity — Power Plants and PM2.5 Across U.S. Counties
 
 **Author:** Winn Philpott  
-**Program:** EIL Summer 2026  
+**Program:** Environment Inequality Lab Summer Research Training Program 
 **Date:** 2026-06-02
 
 ---
