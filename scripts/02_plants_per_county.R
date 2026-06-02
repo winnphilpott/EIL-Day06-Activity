@@ -69,6 +69,20 @@ cat("Total plants in raw data:       ", nrow(plants), "\n")
 cat("Total plants matched to county: ", sum(plant_counts$n_plants), "\n")
 cat("Unmatched (outside any county): ", nrow(plants) - sum(plant_counts$n_plants), "\n")
 cat("Counties with >= 1 plant:       ", sum(counties_pip$n_plants > 0), "of", nrow(counties_pip), "\n")
+cat("Counties with 0 plants:         ", sum(counties_pip$n_plants == 0), "\n")
+cat("Counties with 1 plant:          ", sum(counties_pip$n_plants == 1), "\n")
+cat("Counties with 2+ plants:        ", sum(counties_pip$n_plants >= 2), "\n")
+cat("\nDistribution of plants per county:\n")
+print(summary(counties_pip$n_plants))
+cat("Std deviation:                  ", round(sd(counties_pip$n_plants), 2), "\n")
+cat("\nTop 5 counties by plant count:\n")
+print(
+  counties_pip |>
+    st_drop_geometry() |>
+    arrange(desc(n_plants)) |>
+    select(NAME, STATEFP, n_plants) |>
+    head(5)
+)
 cat("==============================================\n\n")
 
 
