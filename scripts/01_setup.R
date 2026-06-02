@@ -32,10 +32,6 @@ setwd("/Users/winnphilpott/Desktop/EIL Summer/EIL-Day06-Activity")
 
 
 # ---- Packages ----------------------------------------------------------------
-# We use `pacman` to manage packages: p_load() installs any package that is
-# not already installed, then loads it. This means the script is self-contained
-# -- a collaborator can run it on a fresh R installation without manually
-# installing packages first.
 
 if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
 
@@ -51,17 +47,11 @@ pacman::p_load(
 
 
 # ---- File paths --------------------------------------------------------------
-# Storing paths as variables means we only have to update one place if the
-# folder structure ever changes.
 
 data_raw <- "data/raw/"
 
 
 # ---- Common coordinate reference system (CRS) --------------------------------
-# All three layers arrive in different CRSs. Before we can do any spatial
-# operations (buffers, intersections, extractions), they all need to be in
-# the same CRS -- and ideally one measured in meters, not degrees.
-#
 # EPSG:5070 = NAD83 / Conus Albers
 #   - Covers the contiguous U.S.
 #   - Equal-area projection: good for area calculations
@@ -71,10 +61,6 @@ target_crs <- 5070
 
 
 # ---- Load and reproject: county boundaries -----------------------------------
-# st_read() reads the shapefile into R as an sf data frame.
-# st_transform() reprojects it to our target CRS.
-# st_make_valid() repairs any malformed polygon geometries (a common issue
-# with Census TIGER shapefiles near coastlines).
 
 counties <- st_read(paste0(data_raw, "us_counties.shp"), quiet = TRUE) |>
   st_transform(target_crs) |>
@@ -88,9 +74,6 @@ plants <- st_read(paste0(data_raw, "us_powerplants.shp"), quiet = TRUE) |>
 
 
 # ---- Load and reproject: PM2.5 raster ----------------------------------------
-# terra::project() reprojects the raster to match the vector layers.
-# Raster reprojection resamples (interpolates) the grid, so values will
-# change very slightly -- this is expected and acceptable.
 
 pm25 <- rast(paste0(data_raw, "us_pm25.tif"))
 pm25 <- terra::project(pm25, paste0("EPSG:", target_crs))
@@ -98,8 +81,7 @@ pm25 <- terra::project(pm25, paste0("EPSG:", target_crs))
 
 # ---- Sanity checks -----------------------------------------------------------
 # These will throw an error (and stop the script) if something went wrong
-# with the reprojection. Better to catch it here than get mysterious errors
-# later in the analysis.
+# with the reprojection.
 
 stopifnot(st_crs(counties) == st_crs(plants))
 stopifnot(st_crs(counties)$epsg == target_crs)
