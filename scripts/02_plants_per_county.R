@@ -87,7 +87,7 @@ p_pip <- ggplot(counties_pip) +
   ) +
   labs(
     title    = "Power plants per county, contiguous U.S.",
-    subtitle = "EIA-860 facilities ≥ 1 MW",
+    subtitle = "EIA-860 facilities >= 1 MW",
     caption  = "Source: EIA Form 860"
   ) +
   theme_void() +
