@@ -21,10 +21,8 @@ At the county level, the maximum PM2.5 level is 11.74 and the lowest is 3.12. Co
 
 ## Comparison: PM2.5 in counties with vs. without plants
 ![Fig. 4: PM2.5 by plant presence](outputs/pm25_comparison.png)
-
 ### Within-county measure
 The levels of PM2.5 in counties with and without plants is nearly identical -- both PM2.5 means are very close to 8. 
-
 ### Nearby measure
 Using the nearby measure produces almost exactly the same image -- counties with and without nearby power plants have PM2.5 means of about 8.
 
