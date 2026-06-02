@@ -87,7 +87,7 @@ p_buf <- ggplot(counties_buf) +
   ) +
   labs(
     title    = "Power plants within 50 km of each county, contiguous U.S.",
-    subtitle = "EIA-860 facilities ≥ 1 MW",
+    subtitle = "EIA-860 facilities >= 1 MW",
     caption  = "Source: EIA Form 860"
   ) +
   theme_void() +
