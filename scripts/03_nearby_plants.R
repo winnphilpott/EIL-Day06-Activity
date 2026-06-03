@@ -5,11 +5,7 @@
 #          then count how many of those circles overlap each county.
 #
 #          Distance choice: 50 km.
-#          Power plant emissions (especially from fossil fuels) can travel
-#          tens of kilometers downwind. A 50 km radius captures meaningful
-#          cross-county spillovers while remaining sub-regional in scale.
-#          It also exceeds the ~5 km raster resolution, so the PM2.5 surface
-#          has spatial variation that is meaningful at this distance.
+#          Based on EPA guidelines for PM2.5 permitting
 #
 # Inputs:
 #   R objects `counties` and `plants` (loaded by 01_setup.R)
@@ -28,10 +24,6 @@ source("scripts/01_setup.R")
 
 
 # ---- Set buffer distance -----------------------------------------------------
-# Storing the distance as a named variable (rather than writing 50000 directly
-# in the st_buffer() call) makes it easy to change later and makes the code
-# self-documenting.
-#
 # Units are meters because our CRS (EPSG:5070) measures distance in meters.
 # 50 km = 50,000 meters.
 
@@ -39,22 +31,11 @@ buffer_dist_m <- 50000  # 50 km
 
 
 # ---- Buffer the plant points -------------------------------------------------
-# st_buffer() draws a circle of radius `buffer_dist_m` around each plant point.
-# The result is a new sf object where each row is a circle (polygon), not a
-# point. We are not changing what the plants *are* -- we are just giving each
-# one a zone of influence.
 
 plants_buf <- st_buffer(plants, dist = buffer_dist_m)
 
 
 # ---- Count nearby plants per county ------------------------------------------
-# st_intersects(counties, plants_buf) asks: for each county, which plant
-# buffers touch it? It returns a list with one element per county; each
-# element is a vector of indices of the plant buffers that overlap that county.
-# lengths() converts each vector to a count.
-#
-# This captures plants that are near a county even if they are not inside it --
-# which is exactly what the "nearby" measure is designed to do.
 
 counties_buf <- counties |>
   mutate(
@@ -87,8 +68,6 @@ cat("===================================================\n\n")
 
 
 # ---- Map ---------------------------------------------------------------------
-# Choropleth: each county shaded by how many plant buffers overlap it.
-# Square-root scale keeps high-count counties from washing out the rest.
 
 p_buf <- ggplot(counties_buf) +
   geom_sf(aes(fill = n_plants_50km), color = "white", linewidth = 0.1) +
