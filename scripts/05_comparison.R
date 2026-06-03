@@ -3,7 +3,7 @@
 # Purpose: Join all county-level measures and compare mean PM2.5 between
 #          counties with and without power plants.
 #
-#          We report two comparisons:
+#          Report two comparisons:
 #            (a) Within-county: counties where n_plants > 0 vs. n_plants == 0
 #            (b) Nearby:        counties where n_plants_50km > 0 vs. == 0
 #
@@ -32,10 +32,6 @@ source("scripts/04_pm25_extraction.R")
 
 
 # ---- Join all county-level measures ------------------------------------------
-# Each of the three upstream scripts produced a version of the counties sf
-# with one new column. Here we drop the geometry and join them all together
-# into a single flat data frame -- one row per county, all measures together.
-# We use GEOID as the join key throughout.
 
 counties_summary <- counties_pm25 |>
   st_drop_geometry() |>
@@ -74,8 +70,6 @@ cat("==========================================\n\n")
 
 
 # ---- Compute group means -----------------------------------------------------
-# For each of the two plant-presence indicators, compute the mean PM2.5
-# across counties in each group. This is the core comparison the assignment asks for.
 
 comparison <- data.frame(
   measure = c("Within-county", "Within-county", "Nearby (50 km)", "Nearby (50 km)"),
@@ -94,8 +88,6 @@ cat("================================\n\n")
 
 
 # ---- Bar chart ---------------------------------------------------------------
-# Display the four group means side by side, with the two measures in separate
-# panels so the within-county and nearby comparisons are easy to read.
 
 p_comparison <- ggplot(comparison, aes(x = group, y = mean_pm25, fill = group)) +
   geom_col(width = 0.6) +
