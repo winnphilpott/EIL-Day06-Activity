@@ -6,12 +6,6 @@
 #          a county contribute proportionally rather than being fully counted
 #          or fully dropped.
 #
-#          We use exactextractr::exact_extract() rather than terra::extract()
-#          because terra's default treats each raster cell as either fully
-#          inside or fully outside a polygon. For small counties (relative to
-#          the ~5 km cell size), this can produce noticeably wrong averages.
-#          exact_extract() handles partial overlaps correctly.
-#
 # Inputs:
 #   R objects `counties` and `pm25` (loaded by 01_setup.R)
 #
@@ -29,12 +23,6 @@ source("scripts/01_setup.R")
 
 
 # ---- Extract mean PM2.5 per county -------------------------------------------
-# exact_extract() takes the raster and the county polygons and computes a
-# summary statistic for each county. fun = "mean" gives the area-weighted
-# average of all raster cells that overlap each county polygon.
-#
-# progress = FALSE suppresses a progress bar that is useful interactively
-# but clutters automated output.
 
 counties_pm25 <- counties |>
   mutate(
@@ -43,10 +31,6 @@ counties_pm25 <- counties |>
 
 
 # ---- Sanity check ------------------------------------------------------------
-# Every county should get a non-NA mean. A high NA count would suggest the
-# raster does not fully cover the county layer (a CRS mismatch or extent
-# problem). The value range should be physically plausible: annual mean PM2.5
-# in the contiguous U.S. typically runs from roughly 2 to 15 ug/m^3.
 
 cat("\n=== Sanity Check: PM2.5 Extraction ===\n")
 cat("Counties with non-NA mean PM2.5: ", sum(!is.na(counties_pm25$mean_pm25)), "of", nrow(counties_pm25), "\n")
@@ -74,9 +58,6 @@ cat("=======================================\n\n")
 
 
 # ---- Map ---------------------------------------------------------------------
-# Choropleth: each county shaded by its mean annual PM2.5 concentration.
-# No transformation needed here -- PM2.5 values are already on a fairly
-# linear scale across counties.
 
 p_pm25 <- ggplot(counties_pm25) +
   geom_sf(aes(fill = mean_pm25), color = NA) +
