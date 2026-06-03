@@ -22,13 +22,7 @@ source("scripts/01_setup.R")
 
 
 # ---- Point-in-polygon join ---------------------------------------------------
-# st_join() attaches county attributes to each plant point based on which
-# county polygon contains it. The result has one row per plant, with the
-# plant's own columns plus the GEOID and NAME of its containing county.
-#
-# join = st_within means: attach county info to a plant only if the plant
-# falls entirely *within* that county. Plants that land exactly on a county
-# border (a common geocoding artifact) may not match any county -- we flag
+# Plants that land exactly on a county border may not match any county -- we flag
 # those in the sanity check below.
 
 plants_with_county <- st_join(
@@ -39,7 +33,7 @@ plants_with_county <- st_join(
 
 
 # ---- Count plants per county -------------------------------------------------
-# Drop the point geometry (we no longer need coordinates) and count how many
+# Drop the point geometry and count how many
 # plants share each GEOID. The result is a plain data frame, one row per
 # county that contains at least one plant.
 
@@ -59,10 +53,6 @@ counties_pip <- counties |>
 
 
 # ---- Sanity check ------------------------------------------------------------
-# The count of matched plants should be close to (but may not exactly equal)
-# the total number of plants. Any gap means some plants fell outside all
-# county polygons -- this is normal for plants near coastlines or on
-# simplified boundaries, but a large gap would suggest a data problem.
 
 cat("\n=== Sanity Check: Plant-to-County Matching ===\n")
 cat("Total plants in raw data:       ", nrow(plants), "\n")
@@ -87,10 +77,6 @@ cat("==============================================\n\n")
 
 
 # ---- Map ---------------------------------------------------------------------
-# Choropleth: each county shaded by its plant count.
-# We use a square-root color scale (trans = "sqrt") because a handful of
-# counties have very high counts that would wash out the rest of the map
-# on a linear scale.
 
 p_pip <- ggplot(counties_pip) +
   geom_sf(aes(fill = n_plants), color = "white", linewidth = 0.1) +
